@@ -33,14 +33,25 @@ const displayLevelWord = async (data) => {
   // console.log(data)
   const wordContainer = document.getElementById("wordContainer");
   wordContainer.innerHTML = "";
+  if (data.length == 0) {
+    wordContainer.innerHTML = `
+      
+            <div class="text-center col-span-full rounded-xl py-10 space-y-6 fontBangla">
+            <img class  = "mx-auto" src = "./assets/alert-error.png" />
+                <p class=" font-medium text-gray-400">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
+                <h2 class="font-bold text-3xl">নেক্সট Lesson এ যান</h2>
+            </div>
+    `;
+  }
+
   data.forEach((info) => {
     const wordDiv = document.createElement("div");
     wordDiv.innerHTML = `
       <div class="bg-white rounded-xl shadow-sm text-center py-10 px-5">
-                <h2>${info.word}</h2>
+                <h2>${info.word ? info.word : "No word found"}</h2>
                 <p>Meaning / Pronounciation</p>
                 <div>
-                    <h2 class="fontBangla">"${info.meaning}" / "${info.pronunciation}"</h2>
+                    <h2 class="fontBangla">"${info.meaning ? info.meaning : "No meaning found"}" / "${info.pronunciation ? info.pronunciation : "No pronounciation found"}"</h2>
                 </div>
 
 
