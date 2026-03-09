@@ -6,6 +6,11 @@ const loadData = async () => {
   displayLessons(data.data);
 };
 
+const removeActive = () => {
+  const removeActiveClr = document.querySelectorAll(".removePurle");
+  removeActiveClr.forEach((btn) => btn.classList.remove("active"));
+};
+
 const displayLessons = async (lessons) => {
   const levelContainer = document.getElementById("levelContainer");
   levelContainer.innerHTML = "";
@@ -13,8 +18,11 @@ const displayLessons = async (lessons) => {
   for (let lesson of lessons) {
     const levelDiv = document.createElement("div");
     levelDiv.innerHTML = `
-    <button onclick = "loadLevelWord(${lesson.level_no})"
-                    class="btn btn-outline btn-primary cursor-pointer hover:bg-transparent hover:text-primary hover:border-primary "><i
+    <button
+    id = "lessonBtn-${lesson.level_no}"
+       
+    onclick = "loadLevelWord(${lesson.level_no})"
+                    class="btn btn-outline btn-primary cursor-pointer hover:bg-transparent hover:text-primary hover:border-primary removePurle "><i
                         class="fa-solid fa-book-open" style="color: rgb(66, 42, 213);"></i> Learn - ${lesson.level_no}</button>`;
 
     levelContainer.append(levelDiv);
@@ -25,9 +33,15 @@ const loadLevelWord = async (id) => {
   const res = await fetch(
     `https://openapi.programming-hero.com/api/level/${id}`,
   );
+  removeActive();
   const data = await res.json();
+
+  const clickBtn = document.getElementById(`lessonBtn-${id}`);
+  clickBtn.classList.add("active");
   displayLevelWord(data.data);
 };
+
+// };
 
 const displayLevelWord = async (data) => {
   // console.log(data)
@@ -51,7 +65,7 @@ const displayLevelWord = async (data) => {
                 <h2>${info.word ? info.word : "No word found"}</h2>
                 <p>Meaning / Pronounciation</p>
                 <div>
-                    <h2 class="fontBangla">"${info.meaning ? info.meaning : "No meaning found"}" / "${info.pronunciation ? info.pronunciation : "No pronounciation found"}"</h2>
+                    <h2 class="fontBangla">"${info.meaning ? info.meaning : "No meaning found"}" / "${info.pronunciation ? info.pronunciation : "No pronounciation"}"</h2>
                 </div>
 
 
